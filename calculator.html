@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
+    <title>Calculator</title>
+    <style>
+        body::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            background: linear-gradient(45deg, #00dcff, cadetblue);
+            z-index: -1;
+        }
+
+        .heading {
+            font-size: 1.6rem;
+            padding: 0.3rem;
+            font-weight: 800;
+            font-family: monospace;
+            color: beige;
+        }
+
+        div#calculator {
+            border: 1px solid;
+            /* margin: 1rem 0rem 0rem 7rem; */
+            margin-top: 2rem;
+            padding: .3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: teal;
+            width: fit-content;
+            flex-direction: column;
+            height: fit-content;
+            border-radius: 13px;
+            border: 3px solid beige;
+        }
+
+        input[type="text"] {
+            height: 11vh;
+            width: 40vh;
+            background: tomato;
+            font-size: 1.4rem;
+            padding-left: 3px;
+            color: aliceblue;
+            outline: none;
+            border-radius: 13px;
+            border: navajowhite;
+        }
+
+        div#buttons {
+            padding: 0.7rem;
+            margin-top: 2vh;
+            display: grid;
+            border: 1px solid;
+            width: 40vh;
+            border-radius: 13px;
+
+            grid-template-columns: 8vh 8vh 8vh 8vh;
+            justify-content: center;
+            background-color: tomato;
+            border: navajowhite;
+        }
+
+        span.element {
+            border: 1px solid;
+            display: inline-block;
+            width: -webkit-fill-available;
+            height: 4vh;
+            margin: 4px;
+            border: navajowhite;
+
+            background-color: yellow;
+            text-align: center;
+        }
+
+        div#history {
+            /* border: 1px solid; */
+            width: 100%;
+            height: 16vh;
+            overflow: hidden;
+            overflow-x: auto;
+            padding: 1rem;
+            display: flex;
+        }
+
+        .history-data {
+            border: 1px solid;
+            height: fit-content;
+            width: fit-content;
+            padding: 0.4rem;
+            margin: 3px;
+        }
+  .none{
+    display: none;
+  }
+        /* ::-webkit-scrollbar{
+    width: 13px;
+/* } */
+        .que,
+        .Ans {
+            text-align: end;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-dark" >
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top" />
+                <span class="heading"> Calculator </span>
+            </a>
+        </div>
+    </nav>
+
+    <div id="calculator" class="container">
+        <div class="screen">
+            <input type="text" />
+        </div>
+        <div id="buttons"></div>
+    </div>
+    <div id="history">
+
+
+
+
+
+    </div>
+    </div>
+
+    <script>
+        const inputValue = document.querySelector("input");
+        const btnContent = document.getElementById("buttons");
+        const history = document.getElementById("history")
+        let data = {}
+        let arrayOfdata = []
+        const btnElement = [
+            "C",
+            "<",
+            "%",
+            "/",
+            7,
+            8,
+            9,
+            "*",
+            4,
+            5,
+            6,
+            "-",
+            1,
+            2,
+            3,
+            "+",
+            "&#8596;",
+            0,
+            ".",
+            "=",
+        ];
+
+        let html = "";
+        btnElement.map((e) => {
+            html = `
+        <span class="element"  onClick="handleText(this)" >${e}</span>
+           
+            
+            
+            `;
+            btnContent.innerHTML += html;
+        });
+
+
+        function handleText(e) {
+            // console.log(typeof e.innerText);
+            inputValue.value += e.innerText;
+
+            if (inputValue.value.includes("C")) {
+                inputValue.value = null;
+            }
+
+
+
+
+
+
+            else if (inputValue.value.includes("<")) {
+
+                inputValue.value = inputValue.value.slice(0, inputValue.value.length - 2)
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+            else if (inputValue.value.includes("↔")) {
+                inputValue.value = inputValue.value.slice(0, inputValue.value.length - 2)
+                let getData = localStorage.getItem("historyCalculator")
+
+                    JSON.parse(getData).forEach(element => {
+                        // style = "display: none;"
+                        history.innerHTML += `
+                        
+                        <div class="history-data">
+                            <div class="que">${element.value}</div>
+                            <div class="Ans">${element.cal}</div>
+                            </div>
+                            
+                            `;
+
+
+
+                            isShown = false
+                    });
+                
+             
+
+
+            }
+
+
+
+
+
+
+
+
+            else if (inputValue.value.includes("=")) {
+                // console.log(true);
+                let value = inputValue.value.slice(0, inputValue.value.length - 1);
+                parseInt(value);
+                let cal = eval(value);
+
+                inputValue.value = cal;
+
+
+                data = { value, cal }
+                console.log(data);
+
+                arrayOfdata.push(data)
+                console.log(arrayOfdata);
+
+                localStorage.setItem("historyCalculator", JSON.stringify(arrayOfdata))
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
